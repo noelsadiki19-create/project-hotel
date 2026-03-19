@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register - MAISON ROYALE BRALMOS{% endblock %}
+
+{% block nav_home %}{% endblock %}
+
+{% block content %}
+<div class="hero_area">
+  <div class="bg-box">
+    <img src="{% static 'images/hero-bg.jpg' %}" alt="">
+  </div>
+</div>
+
+<section class="book_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        Register
+      </h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="form_container">
+          <form method="POST" action="">
+            {% csrf_token %}
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}
+                  <div>{{ error }}</div>
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endif %}
+
+            <div>
+              <label for="id_username" class="">Username</label>
+              <input 
+                type="text" 
+                name="username" 
+                id="id_username" 
+                class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                placeholder="Choose a username"
+                required
+              />
+              {% if form.username.errors %}
+                <div class="invalid-feedback">
+                  {{ form.username.errors }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_email" class="">Email</label>
+              <input 
+                type="email" 
+                name="email" 
+                id="id_email" 
+                class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                placeholder="Enter your email"
+                required
+              />
+              {% if form.email.errors %}
+                <div class="invalid-feedback">
+                  {{ form.email.errors }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_first_name" class="">First Name</label>
+              <input 
+                type="text" 
+                name="first_name" 
+                id="id_first_name" 
+                class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                placeholder="Enter your first name"
+              />
+              {% if form.first_name.errors %}
+                <div class="invalid-feedback">
+                  {{ form.first_name.errors }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_last_name" class="">Last Name</label>
+              <input 
+                type="text" 
+                name="last_name" 
+                id="id_last_name" 
+                class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                placeholder="Enter your last name"
+              />
+              {% if form.last_name.errors %}
+                <div class="invalid-feedback">
+                  {{ form.last_name.errors }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_password1" class="">Password</label>
+              <input 
+                type="password" 
+                name="password1" 
+                id="id_password1" 
+                class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                placeholder="Enter a strong password"
+                required
+              />
+              {% if form.password1.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.password1.errors %}
+                    <div>{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_password2" class="">Confirm Password</label>
+              <input 
+                type="password" 
+                name="password2" 
+                id="id_password2" 
+                class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                placeholder="Confirm your password"
+                required
+              />
+              {% if form.password2.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.password2.errors %}
+                    <div>{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="btn_box">
+              <button type="submit" class="btn btn-primary">
+                Register
+              </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+              <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

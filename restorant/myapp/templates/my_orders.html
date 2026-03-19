@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<section class="food_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>My Orders</h2>
+    </div>
+
+    {% if orders %}
+    <div class="row">
+      {% for order in orders %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div style="border:1px solid #ddd; border-radius:8px; padding:20px; background:#f9f9f9; transition:all 0.3s ease; cursor:pointer;" 
+             onmouseover="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'" 
+             onmouseout="this.style.boxShadow='none'">
+          
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h5 style="margin:0;">Order #{{ order.id }}</h5>
+            <span style="background:{% if order.status == 'pending' %}#fff3cd{% elif order.status == 'completed' %}#d4edda{% else %}#e7e7ff{% endif %}; 
+                         color:{% if order.status == 'pending' %}#856404{% elif order.status == 'completed' %}#155724{% else %}#004085{% endif %}; 
+                         padding:5px 12px; border-radius:20px; font-size:12px; font-weight:bold;">
+              {{ order.get_status_display }}
+            </span>
+          </div>
+
+          <hr style="margin:10px 0;">
+
+          <p style="margin:8px 0; font-size:14px;">
+            <strong>Customer:</strong> {{ order.customer_name }}
+          </p>
+          <p style="margin:8px 0; font-size:14px;">
+            <strong>Date:</strong> {{ order.created_at|date:"M d, Y H:i" }}
+          </p>
+          <p style="margin:8px 0; font-size:14px;">
+            <strong>Items:</strong> {{ order.orderitem_set.count }} items
+          </p>
+
+          <div style="background:#ffffff; padding:12px; border-radius:5px; margin:15px 0;">
+            <p style="margin:0; font-size:12px; color:#666;">Total Amount</p>
+            <p style="margin:5px 0; font-size:20px; color:#ffbe33; font-weight:bold;">KS{{ order.total_price }}</p>
+          </div>
+
+          <a href="{% url 'order_confirmation' order.id %}" class="btn btn-sm btn-warning" 
+             style="width:100%; padding:10px; background:#ffbe33; color:#000; border:none; border-radius:5px; font-weight:bold; text-align:center; display:block;">
+            View Details
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="text-align:center; padding:60px 20px;">
+      <div style="font-size:48px; color:#ddd; margin-bottom:20px;">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <h4 style="margin-bottom:15px; color:#666;">No Orders Yet</h4>
+      <p style="font-size:16px; color:#999; margin-bottom:30px;">You haven't placed any orders yet. Start ordering your favorite food now!</p>
+      <a href="{% url 'menu' %}" class="btn btn-warning" style="padding:12px 40px; font-weight:bold; border:none; border-radius:5px; background:#ffbe33; color:#000;">Browse Menu</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

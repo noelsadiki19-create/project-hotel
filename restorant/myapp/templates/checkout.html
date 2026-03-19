@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<section class="food_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>Checkout</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="checkout-form" style="border:1px solid #ddd; padding:30px; border-radius:8px; background:#f9f9f9;">
+          <h4 style="margin-bottom:25px;">Delivery Information</h4>
+          
+          <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="customer_name">Full Name <span style="color:red;">*</span></label>
+                  <input type="text" id="customer_name" name="customer_name" class="form-control" value="{{ user.get_full_name }}" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="customer_email">Email <span style="color:red;">*</span></label>
+                  <input type="email" id="customer_email" name="customer_email" class="form-control" value="{{ user.email }}" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="customer_phone">Phone Number <span style="color:red;">*</span></label>
+              <input type="tel" id="customer_phone" name="customer_phone" class="form-control" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+              <label for="delivery_address">Delivery Address <span style="color:red;">*</span></label>
+              <textarea id="delivery_address" name="delivery_address" class="form-control" rows="4" placeholder="Enter your complete delivery address" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="special_instructions">Special Instructions (Optional)</label>
+              <textarea id="special_instructions" name="special_instructions" class="form-control" rows="3" placeholder="Any special requests or instructions?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning" style="width:100%; padding:12px; font-weight:bold; border:none; border-radius:5px; background:#ffbe33; color:#000; font-size:16px; margin-top:20px;">Place Order</button>
+            <a href="{% url 'view_cart' %}" class="btn btn-secondary" style="width:100%; padding:12px; font-weight:bold; border:none; border-radius:5px; background:#6c757d; color:#fff; text-align:center; margin-top:10px;">Back to Cart</a>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="order-summary" style="border:1px solid #ddd; padding:20px; border-radius:8px; background:#f9f9f9; position:sticky; top:20px;">
+          <h4 style="margin-bottom:20px;">Order Summary</h4>
+          
+          <div style="border-bottom:1px solid #ddd; padding-bottom:15px; margin-bottom:15px;">
+            {% for item in cart_items %}
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+              <span style="font-size:14px;">
+                <strong>{{ item.food.name }}</strong> <br>
+                <span style="color:#999; font-size:12px;">Qty: {{ item.quantity }}</span>
+              </span>
+              <strong>KS{{ item.get_total_price }}</strong>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <span>Subtotal:</span>
+            <strong>KS{{ total_price }}</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          <hr>
+          <div style="display:flex; justify-content:space-between; font-size:18px; margin-bottom:20px;">
+            <span><strong>Total:</strong></span>
+            <strong style="color:#ffbe33;">KS{{ total_price }}</strong>
+          </div>
+
+          <div style="background:#e8f4f8; padding:15px; border-radius:5px; border-left:4px solid #ffbe33;">
+            <p style="margin:0; font-size:13px; color:#333;">
+              <strong>Estimated Delivery:</strong> 30-45 minutes
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

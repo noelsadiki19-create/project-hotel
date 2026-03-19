@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+<section class="food_section layout_padding">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:40px;">
+      <div style="font-size:60px; color:#28a745; margin-bottom:20px;">
+        <i class="fa fa-check-circle"></i>
+      </div>
+      <h2 style="color:#28a745; margin-bottom:10px;">Order Placed Successfully!</h2>
+      <p style="font-size:18px; color:#666;">Thank you for your order. Your food will be ready soon!</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div style="border:1px solid #ddd; padding:30px; border-radius:8px; background:#f9f9f9; margin-bottom:30px;">
+          <h4 style="margin-bottom:20px; border-bottom:2px solid #ffbe33; padding-bottom:10px;">Order Details</h4>
+          
+          <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-6">
+              <p><strong>Order ID:</strong> <span style="color:#ffbe33; font-size:18px;">#{{ order.id }}</span></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Order Status:</strong> <span style="background:#fff3cd; padding:5px 10px; border-radius:5px; color:#856404;">{{ order.get_status_display }}</span></p>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom:25px;">
+            <div class="col-md-6">
+              <p><strong>Customer Name:</strong> {{ order.customer_name }}</p>
+              <p><strong>Email:</strong> {{ order.customer_email }}</p>
+              <p><strong>Phone:</strong> {{ order.customer_phone }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Delivery Address:</strong></p>
+              <p>{{ order.delivery_address }}</p>
+            </div>
+          </div>
+
+          {% if order.special_instructions %}
+          <div style="background:#e3f2fd; padding:15px; border-radius:5px; margin-bottom:20px;">
+            <p><strong>Special Instructions:</strong></p>
+            <p>{{ order.special_instructions }}</p>
+          </div>
+          {% endif %}
+
+          <h4 style="margin-top:30px; margin-bottom:20px; border-bottom:2px solid #ffbe33; padding-bottom:10px;">Order Items</h4>
+          
+          <table class="table table-sm">
+            <thead class="table-light">
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in order_items %}
+              <tr>
+                <td>
+                  <strong>{{ item.food.name }}</strong>
+                  <br>
+                  <small style="color:#999;">{{ item.food.category }}</small>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>KS{{ item.price_at_order }}</td>
+                <td><strong>KS{{ item.get_total_price }}</strong></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:#f0f0f0; padding:15px; border-radius:5px; margin-bottom:30px;">
+          <p style="margin:0; font-size:14px;">
+            <i class="fa fa-info-circle" style="color:#ffbe33;"></i>
+            <strong>Estimated Delivery:</strong> 30-45 minutes from now
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div style="border:1px solid #ddd; padding:25px; border-radius:8px; background:#fff; position:sticky; top:20px;">
+          <h5 style="margin-bottom:20px; text-align:center;">Order Total</h5>
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #e0e0e0; padding-bottom:10px;">
+            <span>Subtotal:</span>
+            <strong>KS{{ order.total_price }}</strong>
+          </div>
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          
+          <hr>
+          
+          <div style="display:flex; justify-content:space-between; font-size:18px; margin-bottom:20px;">
+            <strong>Total:</strong>
+            <strong style="color:#ffbe33; font-size:20px;">KS{{ order.total_price }}</strong>
+          </div>
+
+          <a href="{% url 'my_orders' %}" class="btn btn-warning" style="width:100%; padding:12px; font-weight:bold; border:none; border-radius:5px; background:#ffbe33; color:#000; text-align:center; display:block; margin-bottom:10px;">View My Orders</a>
+          
+          <a href="{% url 'menu' %}" class="btn btn-secondary" style="width:100%; padding:12px; font-weight:bold; border:none; border-radius:5px; background:#6c757d; color:#fff; text-align:center; display:block;">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
